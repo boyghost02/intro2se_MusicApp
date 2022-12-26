@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" 
+             xmlns:vm="clr-namespace:MusicApp"
+             mc:Ignorable="d" NavigationPage.HasNavigationBar="False"
+             x:Class="MusicApp.RegisterPageView">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <pv:PancakeView  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+
+
+        <Grid RowSpacing="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout>
+                <ImageButton Source="back.png" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="10,20,40,0" BackgroundColor="Transparent" Clicked="Get_Back"/>
+
+                <StackLayout HorizontalOptions="CenterAndExpand" Margin="0,0,0,0">
+                    <Label Text="Register" TextColor="#675BB3" FontSize="30" FontAttributes="Bold" />
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Margin="0,7,0,7" HorizontalOptions="CenterAndExpand" WidthRequest="350">
+                    <Frame  BackgroundColor="#EAE9E9" BorderColor="Transparent" Padding="0" Margin="0,7,0,7" CornerRadius="50" HorizontalOptions="StartAndExpand" WidthRequest="165">
+                        <StackLayout >
+                            <Entry x:Name="txtFirstName" Placeholder="First Name" TextColor="Black" HorizontalOptions="FillAndExpand" Margin="20,0,20,0" PlaceholderColor="#878787" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame BackgroundColor="#EAE9E9" BorderColor="Transparent" Padding="0" Margin="0,7,0,7" CornerRadius="50" HorizontalOptions="EndAndExpand" WidthRequest="165">
+                        <StackLayout >
+                            <Entry x:Name="txtLastName" Placeholder="Last Name"   TextColor="Black" HorizontalOptions="FillAndExpand" Margin="20,0,20,0" PlaceholderColor="#878787" />
+                        </StackLayout>
+                    </Frame>
+                    
+                </StackLayout>
+
+
+                
+
+                <StackLayout Margin="0,0,0,0">
+                    <Frame BackgroundColor="#EAE9E9" BorderColor="Transparent" Padding="0" Margin="7,7,0,7" CornerRadius="50" HorizontalOptions="CenterAndExpand" WidthRequest="350">
+                        <StackLayout >
+                            <Entry x:Name="txtEmail" Placeholder="Email" TextColor="Black" HorizontalOptions="FillAndExpand" Margin="20,0,20,0" PlaceholderColor="#878787" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame BackgroundColor="#EAE9E9" BorderColor="Transparent" Padding="0" Margin="7,7,0,7" CornerRadius="50" HorizontalOptions="CenterAndExpand" WidthRequest="350">
+                        <StackLayout >
+                            <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True"  TextColor="Black" HorizontalOptions="FillAndExpand" Margin="20,0,20,0" PlaceholderColor="#878787" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame BackgroundColor="#EAE9E9" BorderColor="Transparent" Padding="0" Margin="7,7,0,7" CornerRadius="50" HorizontalOptions="CenterAndExpand" WidthRequest="350">
+                        <StackLayout >
+                            <Entry x:Name="txtConfirmPassword" Placeholder="Confirm password" IsPassword="True"  TextColor="Black" HorizontalOptions="FillAndExpand" Margin="20,0,20,0" PlaceholderColor="#878787" />
+                        </StackLayout>
+                    </Frame>
+                    <Button Text="Create account" BackgroundColor="#78CBE4" Margin="120,0,120,7" TextColor="White" FontAttributes="Bold" CornerRadius="50" BorderColor="Transparent" Clicked="Get_Register" />
+                </StackLayout>
+
+            </StackLayout>
+            <StackLayout VerticalOptions="EndAndExpand" Margin="0,0,0,30">
+
+                    <BoxView BackgroundColor="DarkGray" HeightRequest="1" Margin="10" HorizontalOptions="CenterAndExpand" WidthRequest="100"/>
+
+                    <StackLayout  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Label Text="Have an account?" TextColor="DarkGray" FontSize="Small"/>
+                    <Label Text="Log in" TextColor="Red" FontAttributes="Bold" FontSize="Small">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Move_To_Login_Page"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    </StackLayout>
+            </StackLayout>
+
+        </Grid>
+    </pv:PancakeView>
+
+</ContentPage>
+
+
+
+
+            

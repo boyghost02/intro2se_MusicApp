@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" 
+             xmlns:vm="clr-namespace:MusicApp"
+             mc:Ignorable="d" NavigationPage.HasNavigationBar="False"
+             x:Class="MusicApp.CommentPageView">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <pv:PancakeView  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+        <pv:PancakeView.BackgroundGradientStops>
+            <pv:GradientStopCollection>
+                <pv:GradientStop Color="#E7EDF8" Offset="0" />
+                <pv:GradientStop Color="#E3E7EE" Offset="1" />
+            </pv:GradientStopCollection>
+        </pv:PancakeView.BackgroundGradientStops>
+        <Grid RowSpacing="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="7*"/>
+            </Grid.RowDefinitions>
+            <StackLayout>
+                <pv:PancakeView  HeightRequest="44" WidthRequest="40"  Margin="0,0,0,0" 
+                            HorizontalOptions="FillAndExpand" VerticalOptions="Start" >
+
+                    <pv:PancakeView.BackgroundGradientStops>
+                        <pv:GradientStopCollection>
+                            <pv:GradientStop Color="#00CCFF" Offset="0" />
+                            <pv:GradientStop Color="#CCFFFF" Offset="1" />
+                        </pv:GradientStopCollection>
+                    </pv:PancakeView.BackgroundGradientStops>
+
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand">
+                        <ImageButton Source="back.png" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start"  Margin="10,0,0,0" BackgroundColor="Transparent" Clicked="Get_Back"/>
+                        <Label Text="Hello" TextColor="Black" HorizontalOptions="FillAndExpand"  Margin="20,0,0,0" FontSize="20"/>
+                    </StackLayout>
+                    
+                </pv:PancakeView>
+
+            </StackLayout>
+            <StackLayout Grid.Row="1">
+                <Frame BackgroundColor="GhostWhite"  BorderColor="White" Padding="0" Margin="0,7,0,7" CornerRadius="50" HorizontalOptions="Center" VerticalOptions="Start" WidthRequest="350" HeightRequest="70">
+                    <StackLayout Orientation="Horizontal">
+                        <Entry x:Name="txtComment" Placeholder="Comment" TextColor="Black" HorizontalOptions="FillAndExpand" Margin="20,0,0,0" PlaceholderColor="#878787" />
+                        <ImageButton Source="Send.png"  HeightRequest="30" Margin="0,0,10,0" BackgroundColor="Transparent" Clicked="Send_Comment"/>
+                    </StackLayout>
+                </Frame>
+                
+                <CollectionView  Margin="20,0" ItemsSource="{Binding Comments}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                            SelectionMode="Single">
+                    
+                    
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="1"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid BackgroundColor="#F7F9FC" Padding="15,10" HorizontalOptions="FillAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackLayout VerticalOptions="Center">
+                                    <Label Text="{Binding username}" TextColor="Black" FontSize="17"/>
+                                    <Label Text="{Binding cmt}" TextColor="Black" FontSize="12" Opacity="0.5"/>
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </StackLayout>
+        </Grid>
+    </pv:PancakeView>
+
+</ContentPage>

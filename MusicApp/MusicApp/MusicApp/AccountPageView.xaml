@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" 
+             xmlns:vm="clr-namespace:MusicApp"
+             mc:Ignorable="d" NavigationPage.HasNavigationBar="False"
+             x:Class="MusicApp.AccountPageView">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <pv:PancakeView  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="#000055" >
+        <!--<pv:PancakeView.BackgroundGradientStops>
+            <pv:GradientStopCollection >
+                <pv:GradientStop Color="#002200" Offset="0" />
+                <pv:GradientStop Color="#000055" Offset="1" />
+            </pv:GradientStopCollection>
+        </pv:PancakeView.BackgroundGradientStops>-->
+        <Grid RowSpacing="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <StackLayout >
+
+                <pv:PancakeView Margin="0,0,0,-30" CornerRadius="0,0,0,0"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <pv:PancakeView.BackgroundGradientStops>
+                        <pv:GradientStopCollection>
+                            <pv:GradientStop Color="#33FFFF" Offset="0" />
+                            <pv:GradientStop Color="#0099FF" Offset="1" />
+
+                        </pv:GradientStopCollection>
+                    </pv:PancakeView.BackgroundGradientStops>
+
+                    <!--<Frame BackgroundColor="GhostWhite"  BorderColor="White" Padding="0" Margin="7,7,0,7" CornerRadius="50" HorizontalOptions="Center" VerticalOptions="StartAndExpand" WidthRequest="350">-->
+                    <StackLayout>
+                        <ImageButton Source="back.png" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="10,20,40,0" BackgroundColor="Transparent" Clicked="Get_Back"/>
+
+                        <StackLayout Margin="20,20,10,10" HorizontalOptions="StartAndExpand" >
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding MyAccount.firstName}" FontAttributes="Bold" TextColor="Black" FontSize="24"/>
+                                <Label Text="{Binding MyAccount.lastName}" FontAttributes="Bold" TextColor="Black" FontSize="24"/>
+                                <Image Source="crown.png"  WidthRequest="30" HeightRequest="30" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" />
+                            </StackLayout>
+                            <Label Text="{Binding MyAccount.email}" TextColor="Black" FontSize="18" />
+
+
+                        </StackLayout>
+                    </StackLayout>
+                </pv:PancakeView>
+            </StackLayout>
+
+            <pv:PancakeView Grid.Row="1" Margin="20,-50,20,0" CornerRadius="20,20,0,0"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="#002e5a">
+                <StackLayout Margin="0,30,0,0">
+                    <Frame BackgroundColor="Transparent" HeightRequest="25" >
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Playlist" Margin="0,0,0,0" TextColor="WhiteSmoke" FontSize="20" HorizontalOptions="Start"/>
+                            <Image Source="playBlack.png"  WidthRequest="30" HeightRequest="30" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Move_To_Playlist"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                    <Frame BackgroundColor="Transparent" HeightRequest="25" >
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Download playlist" Margin="0,0,0,0" TextColor="WhiteSmoke" FontSize="20" HorizontalOptions="Start"/>
+                            <Image Source="playBlack.png"  WidthRequest="30" HeightRequest="30" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Move_To_DownloadPlaylist"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                    <Frame BackgroundColor="Transparent" HeightRequest="25" >
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Upload" Margin="0,0,0,0" TextColor="WhiteSmoke" FontSize="20" HorizontalOptions="Start"/>
+                            <Image Source="playBlack.png"  WidthRequest="30" HeightRequest="30" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Move_To_UploadPage"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                    <Frame BackgroundColor="Transparent" HeightRequest="25" >
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Manage" Margin="0,0,0,0" TextColor="WhiteSmoke" FontSize="20" HorizontalOptions="Start"/>
+                            <Image Source="playBlack.png"  WidthRequest="30" HeightRequest="30" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Move_To_ManagePage"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                    
+                    
+                   
+
+                    <Label Text="Log out" Margin="10,10,20,20" TextColor="WhiteSmoke" FontSize="19" FontAttributes="Bold" HorizontalOptions="EndAndExpand" VerticalOptions="EndAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Get_Logout"/>
+                    </Label.GestureRecognizers>
+                </Label>
+              
+                
+            </StackLayout>
+            </pv:PancakeView>
+        </Grid>
+    </pv:PancakeView>
+
+</ContentPage>
