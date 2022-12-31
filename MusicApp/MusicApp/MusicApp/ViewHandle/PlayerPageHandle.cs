@@ -6,8 +6,9 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using MusicAppClass;
 
-namespace MusicApp.PageHandle
+namespace MusicApp
 {
     public class PlayerPageHandle : BaseViewModel
     {

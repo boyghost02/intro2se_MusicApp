@@ -7,9 +7,10 @@
              xmlns:vm="clr-namespace:MusicApp"
              mc:Ignorable="d" NavigationPage.HasNavigationBar="False"
              x:Class="MusicApp.LoginPageView">
+            
 
     <ContentPage.BindingContext>
-        <vm:MainViewModel/>
+        <vm:MusicClient/>
     </ContentPage.BindingContext>
 
     <pv:PancakeView  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">

@@ -28,7 +28,7 @@ namespace MusicApp
 
         private void Move_To_Playlist(object sender, EventArgs e)
         {
-            //Navigation.PushAsync(new PlaylistPage());
+            Navigation.PushAsync(new PlaylistPageView());
         }
 
         private void Move_To_DownloadPlaylist(object sender, EventArgs e)

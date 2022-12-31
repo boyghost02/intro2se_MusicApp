@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using MusicAppClass;
 
-namespace MusicApp.PageHandle
+namespace MusicApp
 {
     public class PlaylistPageHandle : BaseViewModel
     {
@@ -26,7 +27,7 @@ namespace MusicApp.PageHandle
                 OnPropertyChanged();
             }
         }
-        
+
         private Song recentMusic;
         public Song RecentMusic
         {
@@ -55,7 +56,7 @@ namespace MusicApp.PageHandle
         {
             if (selectedMusic != null)
             {
-                var viewModel = new PlayerPageHandle(selectedMusic, musicList) ;
+                var viewModel = new PlayerPageHandle(selectedMusic, musicList);
                 var playerPage = new PlayerPageView { BindingContext = viewModel };
 
                 var navigation = Application.Current.MainPage as NavigationPage;

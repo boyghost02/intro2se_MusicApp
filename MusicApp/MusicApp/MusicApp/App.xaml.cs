@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Sockets;
+using System.Net;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -6,23 +8,27 @@ namespace MusicApp
 {
     public partial class App : Application
     {
+        public static MusicClient client;
         public App()
         {
             InitializeComponent();
-
-            MainPage = new NavigationPage(new AccountPageView());
+            client = new MusicClient();
+            MainPage = new NavigationPage(new LoginPageView());
         }
 
         protected override void OnStart()
         {
+            client.Connect();
         }
 
         protected override void OnSleep()
         {
+            client.Disconnect();
         }
 
         protected override void OnResume()
         {
-        }
+            client.Connect();
+        }        
     }
 }

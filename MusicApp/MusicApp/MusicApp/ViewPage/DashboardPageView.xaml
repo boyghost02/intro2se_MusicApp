@@ -20,7 +20,7 @@
         </NavigationPage>
         <NavigationPage Title="Playlist">
             <x:Arguments>
-                <!--<pages:PlaylistPage />-->
+                <pages:PlaylistPageView/>
             </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="Profile">
