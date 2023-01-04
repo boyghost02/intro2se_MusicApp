@@ -23,7 +23,7 @@ namespace MusicApp
 
         private bool check()
         {
-            if (txtEmail == null || txtPassword == null)
+            if (txtEmail.Text == null || txtPassword.Text == null)
             {
                 return false;
             }

@@ -22,7 +22,7 @@ namespace MusicApp
         
         private bool check()
         {
-            if (txtEmail == null || txtPassword == null || txtConfirmPassword == null || txtFirstName == null || txtLastName == null) 
+            if (txtEmail.Text == null || txtPassword.Text == null || txtConfirmPassword.Text == null || txtFirstName.Text == null || txtLastName.Text == null) 
             {
                 return false;
             }
@@ -35,6 +35,7 @@ namespace MusicApp
             {
                 DisplayAlert("Ops..", "Please fill in all the information!", "OK");
             }
+            else
             {
                 byte[] data = new byte[8192];
                 App.client.socket.Send(Serialize("Register"));
@@ -54,7 +55,7 @@ namespace MusicApp
                 }
             }
         }
-
+        
         private void Move_To_Login_Page(object sender, EventArgs e)
         {
             Navigation.PushAsync(new LoginPageView());

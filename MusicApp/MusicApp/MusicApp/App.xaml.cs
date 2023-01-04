@@ -13,7 +13,7 @@ namespace MusicApp
         {
             InitializeComponent();
             client = new MusicClient();
-            MainPage = new NavigationPage(new LoginPageView());
+            MainPage = new NavigationPage(new DashboardPageView());
         }
 
         protected override void OnStart()

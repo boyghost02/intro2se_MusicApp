@@ -8,7 +8,9 @@
              mc:Ignorable="d" NavigationPage.HasNavigationBar="False"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             xmlns:pages="clr-namespace:MusicApp"
+            xmlns:TabbedPage.ToolbarPlacement="Bottom"
             android:TabbedPage.ToolbarPlacement="Bottom"
+            
             
              x:Class="MusicApp.DashboardPageView">
     <!--Pages can be added as references or inline-->
