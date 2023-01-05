@@ -13,7 +13,11 @@ namespace MusicApp.PageHandle
         public PlaylistPageHandle()
         {
             musicList = GetMusics();
-            recentMusic = musicList.Where(x => x.IsRecent == true).FirstOrDefault();
+            //if (musicList == null)
+            //{
+            //    musicList.Add(new Song { Name = "No song in playlist", Singer = "Please add song to playlist", IsRecent = true });
+            //}
+            //recentMusic = musicList.Where(x => x.IsRecent == true).FirstOrDefault();
         }
 
         ObservableCollection<Song> musicList;
@@ -65,33 +69,7 @@ namespace MusicApp.PageHandle
 
         private ObservableCollection<Song> GetMusics()
         {
-            return new ObservableCollection<Song>
-            {
-                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
-                },
-                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                }
-            };
+            return App.client.top20Song;
         }
     }
 }
