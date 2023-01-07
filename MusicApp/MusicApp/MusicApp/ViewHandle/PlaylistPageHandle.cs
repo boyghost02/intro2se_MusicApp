@@ -66,33 +66,34 @@ namespace MusicApp
 
         private ObservableCollection<Song> GetMusics()
         {
-            return new ObservableCollection<Song>
-            {
-                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
-                },
-                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                                                new Song
-                {
-                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                }
-            };
+            //return new ObservableCollection<Song>
+            //{
+            //    new Song
+            //    {
+            //        Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+            //    },
+            //                    new Song
+            //    {
+            //        Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
+            //    },
+            //                                    new Song
+            //    {
+            //        Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
+            //    },
+            //                                                    new Song
+            //    {
+            //        Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
+            //    },
+            //                                                                    new Song
+            //    {
+            //        Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
+            //    },
+            //                                                                                    new Song
+            //    {
+            //        Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
+            //    }
+            //};
+            return App.client.ClientAccount.Playlist;
         }
     }
 }

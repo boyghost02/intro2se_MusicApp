@@ -65,7 +65,7 @@ namespace MusicApp
 
         private void Get_Back(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new HomePageView());
+            Navigation.PushAsync(new DashboardPageView());
         }
 
         byte[] Serialize(object obj)

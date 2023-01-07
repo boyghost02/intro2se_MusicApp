@@ -1,4 +1,5 @@
 ﻿using MusicAppClass;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -18,7 +19,7 @@ namespace MusicApp
         }
         private void Get_Back(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new HomePageView());
+            Navigation.PushAsync(new PlaylistPageView());
         }
 
         private bool check()
@@ -32,27 +33,37 @@ namespace MusicApp
 
         private void Get_Login(object sender, EventArgs e)
         {
-            if (check() == false)
+            if (App.client.isLogin == true)
             {
-                DisplayAlert("Ops..", "Please fill in all the information!", "OK");
+                DisplayAlert("Ops..", "You are login!", "OK");
             }
             else
             {
-                byte[] data = new byte[8192];
-                App.client.socket.Send(Serialize("Login"));
-                App.client.socket.Receive(data);
-
-                Account loginAccount = new Account(txtEmail.Text, txtPassword.Text, TypeOfAccount.NormalUser, null, null, null);
-                App.client.socket.Send(Serialize(loginAccount));
-                App.client.socket.Receive(data);
-                string s = (string)Deserialize(data);
-                if (s.Contains("Login OK"))
+                if (check() == false)
                 {
-                    DisplayAlert("Success", "Login Successful", "OK");
+                    DisplayAlert("Ops..", "Please fill in all the information!", "OK");
                 }
                 else
                 {
-                    DisplayAlert("Ops..", "Username or Password is incorrect!", "OK");
+                    byte[] data = new byte[8192];
+                    App.client.socket.Send(Serialize("Login"));
+                    App.client.socket.Receive(data);
+                    Account loginAccount = new Account(txtEmail.Text, txtPassword.Text, TypeOfAccount.NormalUser, null, null, null);
+                    App.client.socket.Send(Serialize(loginAccount));
+                    App.client.socket.Receive(data);
+                    string s = (string)Deserialize(data);
+                    if (s.Contains("Login Fail") || s.Contains("TEMP MSG"))
+                    {
+                        DisplayAlert("Ops..", "Username or Password is incorrect!", "OK");
+                    }
+                    else
+                    {
+                        DisplayAlert("Success..", "Login successful!", "OK");
+                        Account clientAccount = JsonConvert.DeserializeObject<Account>(s);
+                        App.client.ClientAccount = clientAccount;
+                        App.client.isLogin = true;
+                        OnPropertyChanged();
+                    }
                 }
             }
         }

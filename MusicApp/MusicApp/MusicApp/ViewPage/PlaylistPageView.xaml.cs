@@ -16,6 +16,14 @@ namespace MusicApp
         public PlaylistPageView()
         {
             InitializeComponent();
+
+            if (App.client.isLogin == true)
+            {
+            }
+            else
+            {
+                Navigation.PushAsync(new LoginPageView(), true);
+            }
         }
     }
 }

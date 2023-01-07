@@ -13,22 +13,26 @@ namespace MusicApp
         {
             InitializeComponent();
             client = new MusicClient();
+            client.Connect();
             MainPage = new NavigationPage(new DashboardPageView());
         }
 
         protected override void OnStart()
         {
-            client.Connect();
+            if (!client.socket.Connected)
+                client.Connect();
         }
 
         protected override void OnSleep()
         {
-            client.Disconnect();
+            if (client.socket.Connected)
+                client.Disconnect();
         }
 
         protected override void OnResume()
         {
-            client.Connect();
+            if (!client.socket.Connected)
+                client.Connect();
         }        
     }
 }

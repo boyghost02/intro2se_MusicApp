@@ -16,10 +16,7 @@ namespace MusicApp
         
         public AccountPageView ()
 		{
-            
-            
-            InitializeComponent ();
-            
+            InitializeComponent();
         }
         private void Get_Back(object sender, EventArgs e)
         {
@@ -28,7 +25,7 @@ namespace MusicApp
 
         private void Move_To_Playlist(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new PlaylistPageView());
+            Navigation.PushAsync(new PlaylistPageView());                      
         }
 
         private void Move_To_DownloadPlaylist(object sender, EventArgs e)

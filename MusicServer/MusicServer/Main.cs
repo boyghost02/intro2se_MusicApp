@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using MusicAppClass;
+using Newtonsoft.Json;
 
 namespace MusicServer
 {
@@ -50,6 +52,8 @@ namespace MusicServer
                 i.SubItems.Add("null");
                 i.SubItems.Add("null");
                 i.Tag = client;
+                string json = JsonConvert.SerializeObject(GetTop20Music());
+                client.Send(Serialize(json));
                 listClient.Items.Add(i);
             });
         }
@@ -64,15 +68,24 @@ namespace MusicServer
                     if (client.ID == sender.ID)
                     {
                         string msg = "";
-                        object obj = Deserialize(data);
+                        object obj = null;
+                        try
+                        {
+                            obj = Deserialize(data);
+                        }
+                        catch (Exception ex) 
+                        {
+                            msg = ex.Message;
+                            client_Disconnected(client);
+                            return;
+                        }
                         if (obj is string)
                         {
-                            client.Send(Serialize("NO"));
+                            client.Send(Serialize("TEMP MSG"));
                             msg = (string)obj;
                         }
                         else
                         {
-
                             string request = listClient.Items[i].SubItems[2].Text;
                             switch (request)
                             {
@@ -80,8 +93,16 @@ namespace MusicServer
                                     Account loginAccount = (Account)obj;
                                     if (loginAccount.Email.Contains("123"))
                                     {
-                                        Console.WriteLine("Login");
-                                        client.Send(Serialize("Login OK"));
+                                        ObservableCollection<Song> songs = accountSong();
+
+                                        Account account = new Account("123@gmail.com","", TypeOfAccount.NormalUser,  songs, "Nguyen Van", "A");
+                                        string json = JsonConvert.SerializeObject(account);
+                                        client.Send(Serialize(json));
+                                        listClient.Items[i].SubItems[2].Text = null;
+                                    }
+                                    else
+                                    {
+                                        client.Send(Serialize("Login Fail"));
                                         listClient.Items[i].SubItems[2].Text = null;
                                     }
                                     break;
@@ -90,10 +111,12 @@ namespace MusicServer
                                     if (true)
                                     {
                                         client.Send(Serialize("Register OK"));
+                                        listClient.Items[i].SubItems[2].Text = null;
                                     }
                                     else
                                     {
                                         client.Send(Serialize("Register Fail"));
+                                        listClient.Items[i].SubItems[2].Text = null;
                                     }
                                     break;
                             }
@@ -140,6 +163,119 @@ namespace MusicServer
             BinaryFormatter formatter = new BinaryFormatter();
 
             return formatter.Deserialize(stream);
+        }
+        ObservableCollection<Song> accountSong()
+        {
+            return new ObservableCollection<Song>
+            {
+                          new Song
+                {
+                    Name = "Đố anh đoán được 11", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 22", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 33", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
+                }
+            };
+        }
+            
+        private ObservableCollection<Song> GetTop20Music()
+        {
+            return new ObservableCollection<Song>
+            {
+                new Song
+                {
+                    Name = "Đố anh đoán được 1", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 2", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 3", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 4", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 5", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 6", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 7", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 8", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 9", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được 10", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                },
+                new Song
+                {
+                    Name = "Đố anh đoán được", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
+                }
+            };
         }
     }
 }

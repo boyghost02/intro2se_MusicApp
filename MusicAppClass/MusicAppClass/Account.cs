@@ -30,7 +30,7 @@ namespace MusicAppClass
         public string Password { get => password_; set => password_ = value; }
         public TypeOfAccount Type { get => type_; set => type_ = value; }
         public string Email { get => email_; set => email_ = value; }
-        internal ObservableCollection<Song> Playlist { get => playlist_; set => playlist_ = value; }
+        public ObservableCollection<Song> Playlist { get => playlist_; set => playlist_ = value; }
         public string FirstName { get => firstname_; set => firstname_ = value; }
         public string LastName { get => lastname_; set => lastname_ = value; }
 

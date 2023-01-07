@@ -9,7 +9,7 @@
              x:Class="MusicApp.AccountPageView">
 
     <ContentPage.BindingContext>
-        <vm:MainViewModel/>
+        <vm:AccountPageHandle/>
     </ContentPage.BindingContext>
 
     <pv:PancakeView  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="#000055" >
@@ -41,11 +41,11 @@
 
                         <StackLayout Margin="20,20,10,10" HorizontalOptions="StartAndExpand" >
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding MyAccount.firstName}" FontAttributes="Bold" TextColor="Black" FontSize="24"/>
-                                <Label Text="{Binding MyAccount.lastName}" FontAttributes="Bold" TextColor="Black" FontSize="24"/>
+                                <Label Text="{Binding FirstName}" FontAttributes="Bold" TextColor="Black" FontSize="24"/>
+                                <Label Text="{Binding LastName}" FontAttributes="Bold" TextColor="Black" FontSize="24"/>
                                 <Image Source="crown.png"  WidthRequest="30" HeightRequest="30" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" />
                             </StackLayout>
-                            <Label Text="{Binding MyAccount.email}" TextColor="Black" FontSize="18" />
+                            <Label Text="{Binding Email}" TextColor="Black" FontSize="18" />
 
 
                         </StackLayout>
