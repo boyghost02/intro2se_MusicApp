@@ -118,7 +118,7 @@
                                 <TapGestureRecognizer Command="{Binding CommentCommand}" />
                             </pv:PancakeView.GestureRecognizers>
                             <StackLayout VerticalOptions="End">
-                                <Label Text="Số cmt" HorizontalOptions="Center"/>
+                                <Label Text="{Binding SelectedMusic.Comments.Count}" HorizontalOptions="Center"/>
                                 <Image Source="comment.png" HeightRequest="25" WidthRequest="25" HorizontalOptions="Center" />
                             </StackLayout>
                         </pv:PancakeView>
@@ -134,7 +134,7 @@
                                 <TapGestureRecognizer Command="{Binding LoveCommand}" />
                             </pv:PancakeView.GestureRecognizers>
                             <StackLayout VerticalOptions="End">
-                                <Label Text="Số tim" HorizontalOptions="Center"/>
+                                <Label Text="{Binding SelectedMusic.Like}" HorizontalOptions="Center"/>
                                 <Image Source="heart.png" HeightRequest="25" WidthRequest="25" HorizontalOptions="Center" />
                             </StackLayout>
                         </pv:PancakeView>

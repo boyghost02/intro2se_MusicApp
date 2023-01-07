@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -50,6 +51,7 @@ namespace MusicApp
                     App.client.socket.Receive(data);
                     Account loginAccount = new Account(txtEmail.Text, txtPassword.Text, TypeOfAccount.NormalUser, null, null, null);
                     App.client.socket.Send(Serialize(loginAccount));
+                    Task.Delay(500);
                     App.client.socket.Receive(data);
                     string s = (string)Deserialize(data);
                     if (s.Contains("Login Fail") || s.Contains("TEMP MSG"))

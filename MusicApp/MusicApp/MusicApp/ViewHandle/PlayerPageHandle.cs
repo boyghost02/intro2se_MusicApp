@@ -101,6 +101,52 @@ namespace MusicApp
         public ICommand BackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
         public ICommand ShareCommand => new Command(() => Share.RequestAsync(selectedMusic.Url, selectedMusic.Name));
 
+        public ICommand AddPlaylistCommand => new Command(AddPlaylist);
+        public ICommand LoveCommand => new Command(LoveSong);
+        public ICommand DownloadCommand => new Command(DownloadSong);
+        public ICommand CommentCommand => new Command(CommentSong);
+
+        private void AddPlaylist()
+        {
+            App.client.ClientAccount.Playlist.Add(selectedMusic);
+            OnPropertyChanged();
+        }
+
+        private void LoveSong()
+        {
+            if (App.client.isLogin == true)
+            {
+                selectedMusic.Like++;
+                var currentIndex = musicList.IndexOf(selectedMusic);
+                musicList[currentIndex].Like++;
+                OnPropertyChanged();
+            }
+            else
+            {
+                Application.Current.MainPage.DisplayAlert("Thông báo", "Bạn cần đăng nhập để sử dụng tính năng này", "OK");
+            }
+        }
+
+        private void CommentSong()
+        {
+            if (App.client.isLogin == true)
+            {
+                var viewModel = new CommentPageHandle(selectedMusic.Comments);
+                var commentPage = new CommentPageView { BindingContext = viewModel };
+
+                var navigation = Application.Current.MainPage as NavigationPage;
+                navigation.PushAsync(commentPage, true);
+            }
+            else
+            {
+                Application.Current.MainPage.DisplayAlert("Thông báo", "Bạn cần đăng nhập để sử dụng tính năng này", "OK");
+            }
+        }
+
+        private void DownloadSong()
+        {
+
+        }
 
         private async void Play()
         {

@@ -33,7 +33,7 @@ namespace MusicApp
         {
             if (check() == false)
             {
-                DisplayAlert("Ops..", "Please fill in all the information!", "OK");
+                DisplayAlert("Ops..", "Vui lòng điền đẩy đủ thông tin!", "OK");
             }
             else
             {
@@ -65,7 +65,7 @@ namespace MusicApp
 
         private void Get_Back(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new DashboardPageView());
+            Navigation.PushAsync(new PlaylistPageView());
         }
 
         byte[] Serialize(object obj)

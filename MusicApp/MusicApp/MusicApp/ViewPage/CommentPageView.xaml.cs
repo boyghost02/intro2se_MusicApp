@@ -22,9 +22,9 @@ namespace MusicApp
             //Send(txtComment)
         }
 
-        private void Get_Back(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new HomePageView());
-        }
+        //private void Get_Back(object sender, EventArgs e)
+        //{
+        //    Navigation.PushAsync(new HomePageView());
+        //}
     }
 }

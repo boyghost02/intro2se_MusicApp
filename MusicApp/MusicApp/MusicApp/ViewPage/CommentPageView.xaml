@@ -25,21 +25,18 @@
                 <RowDefinition Height="7*"/>
             </Grid.RowDefinitions>
             <StackLayout>
-                <pv:PancakeView  HeightRequest="44" WidthRequest="40"  Margin="0,0,0,0" 
-                            HorizontalOptions="FillAndExpand" VerticalOptions="Start" >
-
+                <pv:PancakeView HasShadow="True" HeightRequest="40" WidthRequest="40" CornerRadius="20" HorizontalOptions="End" 
+                            VerticalOptions="Center" BackgroundGradientAngle="180">
                     <pv:PancakeView.BackgroundGradientStops>
                         <pv:GradientStopCollection>
-                            <pv:GradientStop Color="#00CCFF" Offset="0" />
-                            <pv:GradientStop Color="#CCFFFF" Offset="1" />
+                            <pv:GradientStop Color="#E3E7EE" Offset="0" />
+                            <pv:GradientStop Color="#FBFBFB" Offset="1" />
                         </pv:GradientStopCollection>
                     </pv:PancakeView.BackgroundGradientStops>
-
-                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand">
-                        <ImageButton Source="back.png" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start"  Margin="10,0,0,0" BackgroundColor="Transparent" Clicked="Get_Back"/>
-                        <Label Text="Hello" TextColor="Black" HorizontalOptions="FillAndExpand"  Margin="20,0,0,0" FontSize="20"/>
-                    </StackLayout>
-                    
+                    <pv:PancakeView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackCommand}"/>
+                    </pv:PancakeView.GestureRecognizers>
+                    <Image Source="back.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="Center" VerticalOptions="Center"/>
                 </pv:PancakeView>
 
             </StackLayout>
