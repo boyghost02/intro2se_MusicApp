@@ -33,7 +33,7 @@ namespace MusicApp
         {
             if (check() == false)
             {
-                DisplayAlert("Ops..", "Vui lòng điền đẩy đủ thông tin!", "OK");
+                DisplayAlert("Ops..", "Please fill in all the information!", "OK");
             }
             else
             {

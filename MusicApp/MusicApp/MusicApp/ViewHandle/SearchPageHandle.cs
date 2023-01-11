@@ -1,22 +1,24 @@
-﻿using System;
+﻿using MusicAppClass;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
-using MusicAppClass;
 
 namespace MusicApp
 {
-    public class PlaylistPageHandle : BaseViewModel
+    public class SearchPageHandle : BaseViewModel
     {
-        public PlaylistPageHandle()
+        public SearchPageHandle(string searchStr, ObservableCollection<Song> SearchSong)
         {
-            musicList = GetMusics();
-            recentMusic = musicList.Where(x => x.IsRecent == true).FirstOrDefault();
+            searchText = searchStr;
+            MusicList = SearchSong;
         }
 
+        string searchText;
+        public string SearchText2 { get { return "Search Results of " + searchText + " : "; } set { searchText = value; OnPropertyChanged(); } }
+        public string SearchText { get { return searchText; } set { searchText = value; OnPropertyChanged(); } }
         ObservableCollection<Song> musicList;
         public ObservableCollection<Song> MusicList
         {
@@ -24,17 +26,6 @@ namespace MusicApp
             set
             {
                 musicList = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Song recentMusic;
-        public Song RecentMusic
-        {
-            get { return recentMusic; }
-            set
-            {
-                recentMusic = value;
                 OnPropertyChanged();
             }
         }
@@ -51,7 +42,6 @@ namespace MusicApp
         }
 
         public ICommand SelectionCommand => new Command(PlayMusic);
-
         private void PlayMusic()
         {
             if (selectedMusic != null)
@@ -62,11 +52,6 @@ namespace MusicApp
                 var navigation = Application.Current.MainPage as NavigationPage;
                 navigation.PushAsync(playerPage, true);
             }
-        }
-
-        private ObservableCollection<Song> GetMusics()
-        {
-            return App.client.ClientAccount.Playlist;
         }
     }
 }

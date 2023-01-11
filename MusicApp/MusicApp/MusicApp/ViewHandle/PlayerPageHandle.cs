@@ -108,22 +108,29 @@ namespace MusicApp
 
         private void AddPlaylist()
         {
-            App.client.ClientAccount.Playlist.Add(selectedMusic);
-            OnPropertyChanged();
+            if (App.client.isLogin == true)
+            {
+                App.client.ClientAccount.Playlist.Add(selectedMusic);
+                OnPropertyChanged();
+            }
+            else
+            {
+                Application.Current.MainPage.DisplayAlert("Message", "You need to login to use this feature", "OK");
+            }
         }
 
         private void LoveSong()
         {
             if (App.client.isLogin == true)
             {
-                selectedMusic.Like++;
+                selectedMusic.Like += 1;
                 var currentIndex = musicList.IndexOf(selectedMusic);
-                musicList[currentIndex].Like++;
+                musicList[currentIndex].Like += 1;
                 OnPropertyChanged();
             }
             else
             {
-                Application.Current.MainPage.DisplayAlert("Thông báo", "Bạn cần đăng nhập để sử dụng tính năng này", "OK");
+                Application.Current.MainPage.DisplayAlert("Message", "You need to login to use this feature", "OK");
             }
         }
 
@@ -139,7 +146,7 @@ namespace MusicApp
             }
             else
             {
-                Application.Current.MainPage.DisplayAlert("Thông báo", "Bạn cần đăng nhập để sử dụng tính năng này", "OK");
+                Application.Current.MainPage.DisplayAlert("Message", "You need to login to use this feature", "OK");
             }
         }
 
@@ -194,9 +201,9 @@ namespace MusicApp
         private void NextMusic()
         {
             var currentIndex = musicList.IndexOf(selectedMusic);
-
             if (currentIndex < musicList.Count - 1)
             {
+                CrossMediaManager.Current.Stop();
                 SelectedMusic = musicList[currentIndex + 1];
                 PlayMusic(selectedMusic);
             }
@@ -208,6 +215,7 @@ namespace MusicApp
 
             if (currentIndex > 0)
             {
+                CrossMediaManager.Current.Stop();
                 SelectedMusic = musicList[currentIndex - 1];
                 PlayMusic(selectedMusic);
             }

@@ -29,7 +29,7 @@
 
                     <Frame BackgroundColor="GhostWhite"  BorderColor="White" Padding="0" Margin="7,7,0,7" CornerRadius="50" HorizontalOptions="Center" VerticalOptions="StartAndExpand" WidthRequest="350">
                         <StackLayout Orientation="Horizontal">
-                            <Entry x:Name="txtSearch" Placeholder="Search" TextColor="Black" HorizontalOptions="FillAndExpand" Margin="20,0,0,0" PlaceholderColor="#878787" />
+                            <Entry x:Name="txtSearch" Placeholder="Search" TextColor="Black" HorizontalOptions="FillAndExpand" Margin="20,0,0,0" PlaceholderColor="#878787" Completed="SearchCompleted"/>
                 
                             <ImageButton Source="Search.png"  HeightRequest="40" Margin="0,0,10,0" BackgroundColor="Transparent" Clicked="Search_clicked"/>
                         </StackLayout>

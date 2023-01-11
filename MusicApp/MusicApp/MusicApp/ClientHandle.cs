@@ -53,6 +53,7 @@ namespace MusicApp
                     string json = (string)Deserialize(data);
                     top20musics = JsonConvert.DeserializeObject<ObservableCollection<Song>>(json);
                 socket.Send(Serialize("Hello Server"));
+                socket.Receive(data);
             }
         }
 
