@@ -23,7 +23,7 @@ namespace MusicApp
         }
         private void Get_Back(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new HomePageView());
+            Navigation.PushAsync(new DashboardPageView());
         }
 
         private void Move_To_Playlist(object sender, EventArgs e)

@@ -10,6 +10,11 @@
             xmlns:pages="clr-namespace:MusicApp"
             android:TabbedPage.ToolbarPlacement="Bottom"
             
+<<<<<<< Updated upstream:MusicApp/MusicApp/MusicApp/DashboardPageView.xaml
+=======
+            
+            
+>>>>>>> Stashed changes:MusicApp/MusicApp/MusicApp/ViewPage/DashboardPageView.xaml
              x:Class="MusicApp.DashboardPageView">
     <!--Pages can be added as references or inline-->
     <TabbedPage.Children>
