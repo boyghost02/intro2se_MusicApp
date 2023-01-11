@@ -2,9 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net.Mail;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -27,6 +29,17 @@ namespace MusicApp
         {
             if (txtEmail.Text == null || txtPassword.Text == null)
             {
+                DisplayAlert("Ops..", "Please fill in all the information!", "OK");
+                return false;
+            }
+            try
+            {
+                MailAddress m = new MailAddress(txtEmail.Text);
+                return true;
+            }
+            catch (FormatException)
+            {
+                DisplayAlert("Ops..", "Please enter a valid email address!", "OK");
                 return false;
             }
             return true;
@@ -42,7 +55,7 @@ namespace MusicApp
             {
                 if (check() == false)
                 {
-                    DisplayAlert("Ops..", "Please fill in all the information!", "OK");
+
                 }
                 else
                 {
@@ -60,11 +73,19 @@ namespace MusicApp
                     }
                     else
                     {
-                        DisplayAlert("Success..", "Login successful!", "OK");
                         Account clientAccount = JsonConvert.DeserializeObject<Account>(s);
-                        App.client.ClientAccount = clientAccount;
-                        App.client.isLogin = true;
-                        OnPropertyChanged();
+                        if (clientAccount.Type == TypeOfAccount.Banned)
+                        {
+                            DisplayAlert("Ops..", "Your account is banned!", "OK");
+                        }
+                        else
+                        {
+                            DisplayAlert("Success..", "Login successful!", "OK");
+                            App.client.ClientAccount = clientAccount;
+                            App.client.isLogin = true;
+                            OnPropertyChanged();
+                            Navigation.PushAsync(new PlaylistPageView());
+                        }
                     }
                 }
             }

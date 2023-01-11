@@ -7,17 +7,14 @@ using MusicAppClass;
 
 namespace MusicApp
 {
-    public class CommentPageHandle
+    public class CommentPageHandle : BaseViewModel
     {
-        public CommentPageHandle(List<Comment> ListComments)
+        public CommentPageHandle(List<Comment> comment)
         {
-            comments = ListComments;
+            comments = comment;
         }
 
-        private List<Comment> comments;
-
-        public ICommand BackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
-
-        public List<Comment> Comments { get => comments; set => comments = value; }
+        List<Comment> comments;
+        public List<Comment> Comments { get { return comments; } set { comments = value; OnPropertyChanged(); } }
     }
 }

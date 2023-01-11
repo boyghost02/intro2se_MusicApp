@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -22,9 +22,12 @@ namespace MusicApp
             //Send(txtComment)
         }
 
-        //private void Get_Back(object sender, EventArgs e)
-        //{
-        //    Navigation.PushAsync(new HomePageView());
-        //}
+        private void Get_Back(object sender, EventArgs e)
+        {
+            Application.Current.MainPage.Navigation.PopAsync();
+        }
+
+        public ICommand BackCommand => new Command(() => Application.Current.MainPage.Navigation.PopAsync());
+
     }
 }

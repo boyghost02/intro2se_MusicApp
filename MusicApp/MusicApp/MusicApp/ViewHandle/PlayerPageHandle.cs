@@ -188,8 +188,7 @@ namespace MusicApp
                 IsPlaying = false;
                 NextMusic();
             };
-
-            Device.StartTimer(TimeSpan.FromMilliseconds(500), () => 
+            Device.StartTimer(TimeSpan.FromMilliseconds(500), () =>
             {
                 Duration = mediaInfo.Duration;
                 Maximum = duration.TotalSeconds;
@@ -203,7 +202,6 @@ namespace MusicApp
             var currentIndex = musicList.IndexOf(selectedMusic);
             if (currentIndex < musicList.Count - 1)
             {
-                CrossMediaManager.Current.Stop();
                 SelectedMusic = musicList[currentIndex + 1];
                 PlayMusic(selectedMusic);
             }
@@ -212,10 +210,8 @@ namespace MusicApp
         private void PreviousMusic()
         {
             var currentIndex = musicList.IndexOf(selectedMusic);
-
             if (currentIndex > 0)
             {
-                CrossMediaManager.Current.Stop();
                 SelectedMusic = musicList[currentIndex - 1];
                 PlayMusic(selectedMusic);
             }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,22 @@ namespace MusicApp
         {
             if (txtEmail.Text == null || txtPassword.Text == null || txtConfirmPassword.Text == null || txtFirstName.Text == null || txtLastName.Text == null) 
             {
+                DisplayAlert("Ops..", "Please fill in all the information!", "OK");
+                return false;
+            }
+            if (txtPassword.Text != txtConfirmPassword.Text)
+            {
+                DisplayAlert("Ops..", "Password and Confirm Password are not the same!", "OK");
+                return false;
+            }
+            try
+            {
+                MailAddress m = new MailAddress(txtEmail.Text);
+                return true;
+            }
+            catch (FormatException)
+            {
+                DisplayAlert("Ops..", "Please enter a valid email address!", "OK");
                 return false;
             }
             return true;
@@ -33,7 +50,7 @@ namespace MusicApp
         {
             if (check() == false)
             {
-                DisplayAlert("Ops..", "Please fill in all the information!", "OK");
+                
             }
             else
             {
