@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MusicAppClass;
+using Newtonsoft.Json;
 
 namespace MusicServer
 {
@@ -51,10 +55,9 @@ namespace MusicServer
                 i.SubItems.Add("null");
                 i.SubItems.Add("null");
                 i.Tag = client;
+                string json = JsonConvert.SerializeObject(GetTop20Music());
+                client.Send(Serialize(json));
                 listClient.Items.Add(i);
-                ObservableCollection<Song> Top20Song = GetMusics();
-                client.Send(Serialize(Top20Song));
-                Console.WriteLine("send hello" + client.EndPoint.ToString());
             });
         }
 
@@ -67,54 +70,82 @@ namespace MusicServer
                     Client client = listClient.Items[i].Tag as Client;
                     if (client.ID == sender.ID)
                     {
-                        object obj = null;
                         string msg = "";
+                        object obj = null;
                         try
                         {
                             obj = Deserialize(data);
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(ex);
+                            msg = ex.Message;
                             client_Disconnected(client);
                             return;
                         }
                         if (obj is string)
                         {
-                            client.Send(Serialize("NO"));
                             msg = (string)obj;
+                            if (msg.Contains("Search"))
+                            {
+                                string search = msg.Split('|')[1];
+                                search = FormatString(search);
+                                ObservableCollection<Song> searchRes = new ObservableCollection<Song>();
+                                bool found = false;
+                                foreach (Song song in MusicList())
+                                {
+                                    string str1 = song.Url.ToUpper();
+                                    string str2 = search.ToUpper();
+                                    if (str1.Contains(str2))
+                                    {
+                                        searchRes.Add(song);
+                                        found = true;
+                                    }
+                                }
+                                if (found)
+                                { }
+                                else
+                                    searchRes = null;
+                                string json = JsonConvert.SerializeObject(searchRes);
+                                client.Send(Serialize(json));
+                            }
+                            else
+                            {
+                                client.Send(Serialize("TEMP MSG"));
+                            }
                         }
                         else
                         {
                             string request = listClient.Items[i].SubItems[2].Text;
                             switch (request)
                             {
-                                //case "Hello Server":
-                                //    ObservableCollection<Song> Top20Song = GetMusics();
-                                //    client.Send(Serialize(Top20Song));
-                                //    break;
                                 case "Login":
                                     Account loginAccount = (Account)obj;
-                                    if (loginAccount.Email.Contains("123"))
+                                    if (checkLogin(loginAccount))
                                     {
-                                        Console.WriteLine("Login");
-                                        client.Send(Serialize("Login OK"));
+                                        ServerData accountData = new ServerData();
+                                        ObservableCollection<Account> accounts = accountData.AccountList();
+                                        Account account = accounts.Where(x => x.Email == loginAccount.Email).FirstOrDefault();
+                                        string json = JsonConvert.SerializeObject(account);
+                                        client.Send(Serialize(json));
                                         listClient.Items[i].SubItems[2].Text = null;
                                     }
                                     else
                                     {
-                                        client.Send(Serialize("Login fail"));
+                                        client.Send(Serialize("Login Fail"));
+                                        listClient.Items[i].SubItems[2].Text = null;
                                     }
                                     break;
                                 case "Register":
                                     Account registerAccount = (Account)obj;
-                                    if (true)
+                                    if (checkRegister(registerAccount))
                                     {
                                         client.Send(Serialize("Register OK"));
+                                        listClient.Items[i].SubItems[2].Text = null;
                                     }
                                     else
                                     {
                                         client.Send(Serialize("Register Fail"));
+                                        listClient.Items[i].SubItems[2].Text = null;
                                     }
                                     break;
                             }
@@ -163,86 +194,83 @@ namespace MusicServer
             return formatter.Deserialize(stream);
         }
 
-        private ObservableCollection<Song> GetMusics()
+        private ObservableCollection<Song> MusicList()
         {
-            return new ObservableCollection<Song>
+            ServerData songData = new ServerData();
+            ObservableCollection<Song> res = songData.MusicList();
+            return res;
+        }
+
+
+        private ObservableCollection<Song> GetTop20Music()
+        {
+            ObservableCollection<Song> top20Songs = new ObservableCollection<Song>(MusicList().OrderByDescending(s => s.Like).Take(20));
+            return top20Songs;
+        }
+
+
+        private static readonly string[] VietNamChar = new string[]
+    {
+        "aAeEoOuUiIdDyY",
+        "áàạảãâấầậẩẫăắằặẳẵ",
+        "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
+        "éèẹẻẽêếềệểễ",
+        "ÉÈẸẺẼÊẾỀỆỂỄ",
+        "óòọỏõôốồộổỗơớờợởỡ",
+        "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
+        "úùụủũưứừựửữ",
+        "ÚÙỤỦŨƯỨỪỰỬỮ",
+        "íìịỉĩ",
+        "ÍÌỊỈĨ",
+        "đ",
+        "Đ",
+        "ýỳỵỷỹ",
+        "ÝỲỴỶỸ"
+    };
+        public string FormatString(string str)
+        {
+            string res = str.Trim();
+            res = Regex.Replace(res, @"\s+", "");
+            res = LocDau(res);
+            return res;
+        }
+        public static string LocDau(string str)
+        {
+            //Thay thế và lọc dấu từng char      
+            for (int i = 1; i < VietNamChar.Length; i++)
             {
-                new Song
+                for (int j = 0; j < VietNamChar[i].Length; j++)
+                    str = str.Replace(VietNamChar[i][j], VietNamChar[0][i - 1]);
+            }
+            return str;
+        }
+
+        public bool checkLogin(Account account)
+        {
+            ServerData accountData = new ServerData();
+            ObservableCollection<Account> accounts = accountData.AccountList();
+            foreach (Account acc in accounts)
+            {
+                if (account.Email == acc.Email && account.Password == acc.Password)
                 {
-                    Name = "Đố anh đoán được 1", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg", IsRecent = true
-                },
-                                new Song
-                {
-                    Name = "Đố anh đoán được 2", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                new Song
-                {
-                    Name = "Đố anh đoán được 3", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                new Song
-                {
-                    Name = "Đố anh đoán được 4", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                                new Song
-                {
-                    Name = "Đố anh đoán được 5", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },
-                                                                                                new Song
-                {
-                    Name = "Đố anh đoán được 6", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 7", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 8", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 9", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 10", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 11", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 12", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 13", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 14", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 15", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 16", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 17", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 18", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 19", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 20", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 21", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 22", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
-                },new Song
-                {
-                    Name = "Đố anh đoán được 23", Singer = "Bích Phương", Url="http://192.168.8.1:8082/music/DoAnhDoanDuoc-BichPhuong.mp3", CoverImage="http://192.168.8.1:8082/music/DoAnhDoanDuoc.jpg"
+                    return true;
                 }
-            };
+            }
+            return false;
+        }
+        
+        public bool checkRegister(Account account)
+        {
+            ServerData accountData = new ServerData();
+            ObservableCollection<Account> accounts = accountData.AccountList();
+            foreach (Account acc in accounts)
+            {
+                if (account.Email == acc.Email)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Sockets;
+using System.Net;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -6,35 +8,31 @@ namespace MusicApp
 {
     public partial class App : Application
     {
+        public static MusicClient client;
         public App()
         {
-<<<<<<< Updated upstream
             InitializeComponent();
-
-            MainPage = new NavigationPage(new AccountPageView());
-=======
             client = new MusicClient();
             client.Connect();
-            InitializeComponent();
-            MainPage = new NavigationPage(new LoginPageView());
->>>>>>> Stashed changes
+            MainPage = new NavigationPage(new DashboardPageView());
         }
 
         protected override void OnStart()
         {
-<<<<<<< Updated upstream
-=======
             if (!client.socket.Connected)
-            client.Connect();
->>>>>>> Stashed changes
+                client.Connect();
         }
 
         protected override void OnSleep()
         {
+            if (client.socket.Connected)
+                client.Disconnect();
         }
 
         protected override void OnResume()
         {
-        }
+            if (!client.socket.Connected)
+                client.Connect();
+        }        
     }
 }

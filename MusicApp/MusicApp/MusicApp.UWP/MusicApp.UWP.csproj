@@ -104,16 +104,25 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\add.png" />
+    <Content Include="Assets\add_circle.png" />
     <Content Include="Assets\back.png" />
     <Content Include="Assets\banner.png" />
+    <Content Include="Assets\comment.png" />
+    <Content Include="Assets\crown.png" />
+    <Content Include="Assets\download.png" />
+    <Content Include="Assets\heart.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\mic.png" />
     <Content Include="Assets\next.png" />
     <Content Include="Assets\pause.png" />
     <Content Include="Assets\play.png" />
     <Content Include="Assets\playBlack.png" />
     <Content Include="Assets\previous.png" />
+    <Content Include="Assets\search.png" />
+    <Content Include="Assets\send.png" />
     <Content Include="Assets\share.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-200.png" />
@@ -133,6 +142,7 @@
     <Content Include="Assets\Square44x44Logo.targetsize-16.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-256.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Assets\StoreLogo.backup.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />

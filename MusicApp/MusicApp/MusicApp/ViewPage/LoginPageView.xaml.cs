@@ -1,8 +1,12 @@
 ﻿using MusicAppClass;
+using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net.Mail;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,13 +22,24 @@ namespace MusicApp
         }
         private void Get_Back(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new DashboardPageView());
+            Navigation.PushAsync(new PlaylistPageView());
         }
 
         private bool check()
         {
             if (txtEmail.Text == null || txtPassword.Text == null)
             {
+                DisplayAlert("Ops..", "Please fill in all the information!", "OK");
+                return false;
+            }
+            try
+            {
+                MailAddress m = new MailAddress(txtEmail.Text);
+                return true;
+            }
+            catch (FormatException)
+            {
+                DisplayAlert("Ops..", "Please enter a valid email address!", "OK");
                 return false;
             }
             return true;
@@ -32,27 +47,46 @@ namespace MusicApp
 
         private void Get_Login(object sender, EventArgs e)
         {
-            if (check() == false)
+            if (App.client.isLogin == true)
             {
-                DisplayAlert("Ops..", "Please fill in all the information!", "OK");
+                DisplayAlert("Ops..", "You are login!", "OK");
             }
             else
             {
-                byte[] data = new byte[8192];
-                App.client.socket.Send(Serialize("Login"));
-                App.client.socket.Receive(data);
-
-                Account loginAccount = new Account(txtEmail.Text, txtPassword.Text, TypeOfAccount.NormalUser, null, null, null);
-                App.client.socket.Send(Serialize(loginAccount));
-                App.client.socket.Receive(data);
-                string s = (string)Deserialize(data);
-                if (s.Contains("Login OK"))
+                if (check() == false)
                 {
-                    DisplayAlert("Success", "Login Successful", "OK");
+
                 }
                 else
                 {
-                    DisplayAlert("Ops..", "Username or Password is incorrect!", "OK");
+                    byte[] data = new byte[8192];
+                    App.client.socket.Send(Serialize("Login"));
+                    App.client.socket.Receive(data);
+                    Account loginAccount = new Account(txtEmail.Text, txtPassword.Text, TypeOfAccount.NormalUser, null, null, null);
+                    App.client.socket.Send(Serialize(loginAccount));
+                    Task.Delay(500);
+                    App.client.socket.Receive(data);
+                    string s = (string)Deserialize(data);
+                    if (s.Contains("Login Fail") || s.Contains("TEMP MSG"))
+                    {
+                        DisplayAlert("Ops..", "Username or Password is incorrect!", "OK");
+                    }
+                    else
+                    {
+                        Account clientAccount = JsonConvert.DeserializeObject<Account>(s);
+                        if (clientAccount.Type == TypeOfAccount.Banned)
+                        {
+                            DisplayAlert("Ops..", "Your account is banned!", "OK");
+                        }
+                        else
+                        {
+                            DisplayAlert("Success..", "Login successful!", "OK");
+                            App.client.ClientAccount = clientAccount;
+                            App.client.isLogin = true;
+                            OnPropertyChanged();
+                            Navigation.PushAsync(new PlaylistPageView());
+                        }
+                    }
                 }
             }
         }
